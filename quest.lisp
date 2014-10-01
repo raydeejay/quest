@@ -24,19 +24,27 @@
 (defvar *town* nil)
 (setf *town* (make-location :name "Town"
                             :description "A very nice town."
-                            :menu '(("1" "Go to the shop" go-to-shop)
-                                    ("2" "Go to the tavern" go-to-tavern))))
+                            :menu (list (list "1" "Go to the shop"
+                                              #'go-to-shop)
+                                        (list "2" "Go to the tavern"
+                                              #'(lambda ()
+                                                  (go-to-tavern))))))
+
 (defvar *shop* nil)
 (setf *shop* (make-location :name "Shop"
                             :description "A very nice shop."
-                            :menu '(("1" "Go to the town" go-to-town)
-                                    ("2" "Go to the tavern" go-to-tavern))))
+                            :menu (list (list "1" "Go to the town"
+                                              #'go-to-town)
+                                        (list "2" "Go to the tavern"
+                                              #'go-to-tavern))))
 
 (defvar *tavern* nil)
 (setf *tavern* (make-location :name "Tavern"
                               :description "A very nice tavern."
-                              :menu '(("1" "Go to the shop" go-to-shop)
-                                      ("2" "Go to the town" go-to-town))))
+                              :menu (list (list "1" "Go to the shop"
+                                                #'go-to-shop)
+                                          (list "2" "Go to the town"
+                                                #'go-to-town))))
 
 (defvar *location* nil)
 (setf *location* *town*)
@@ -70,8 +78,10 @@
 
 (defun take-option (opt menu)
   (mapc (lambda (x)
-          (when (string-equal opt (first x))
-            (funcall (third x))))
+          (let ((key (first x))
+                (command (third x)))
+            (when (string-equal opt key)
+              (funcall command))))
         menu))
 
 ;; game flow
