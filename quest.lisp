@@ -47,7 +47,6 @@
                                                 #'go-to-town))))
 
 (defvar *location* nil)
-(setf *location* *town*)
 
 ;; mockup movement functions
 (defun go-to-town ()
@@ -100,6 +99,7 @@
   (game-loop))
 
 (defun start ()
+  (setf *location* *town*)
   (game-loop)
   (princa :bold "Goodbye!" :reset)
   (fresh-line))
